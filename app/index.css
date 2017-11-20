@@ -25,3 +25,32 @@ li {
   font-weight: bold;
   cursor: pointer;
 }
+
+.languages li.selected {
+  color: #d0021b;
+}
+
+.avatar {
+  width: 150px;
+  border-radius: 50%;
+}
+
+.space-list-items {
+  margin-bottom: 7px;
+}
+
+.popular-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.popular-item {
+  margin: 20px;
+  text-align: center;
+}
+
+.popular-rank {
+  font-size: 20px;
+  margin: 10px;
+}

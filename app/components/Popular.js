@@ -10,7 +10,7 @@ function SelectLanguage(props) {
         {languages.map(lang => {
           return (
             <li 
-              style={lang === props.selectedLanguage ? { color: '#d0021b'}: null}
+              className={lang === props.selectedLanguage ? 'selected' : null}
               key={lang} 
               onClick={props.onSelect.bind(null, lang)}>
                 {lang}
