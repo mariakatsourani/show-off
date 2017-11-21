@@ -55,7 +55,6 @@ class PlayerInput extends React.Component {
         <input
           id='username'
           placeholder='gh username'
-          autoComplete='off'
           value={this.state.username}
           onChange={this.handleChange}
         />
@@ -91,7 +90,7 @@ class Battle extends React.Component {
         [`${id}Name`]: username,
         [`${id}Image`]: `https://github.com/${username}.png?size=200`
       }
-    })
+    });
   }
 
   handleReset (id) {
@@ -104,34 +103,49 @@ class Battle extends React.Component {
   }
   
   render () {
-    return (
-      <div className='row'>
-        {!this.state.playerOneName
-          ? <PlayerInput
-            id='playerOne'
-            label='Player One'
-            onSubmit={this.handleSubmit}
-          />
-          : <PlayerPreview
-              id='playerOne'
-              avatar={this.state.playerOneImage}
-              username={this.state.playerOneName}
-              onReset={this.handleReset}
-            />
-        }
+    const match = this.props.match;
 
-        {!this.state.playerTwoName
-          ? <PlayerInput
-            id='playerTwo'
-            label='Player Two'
-            onSubmit={this.handleSubmit}
-          />
-          : <PlayerPreview
-              id='playerTwo'
-              avatar={this.state.playerTwoImage}
-              username={this.state.playerTwoName}
-              onReset={this.handleReset}
+    return (
+      <div>
+        <div className='row'>
+          {!this.state.playerOneName
+            ? <PlayerInput
+              id='playerOne'
+              label='Player One'
+              onSubmit={this.handleSubmit}
             />
+            : <PlayerPreview
+                id='playerOne'
+                avatar={this.state.playerOneImage}
+                username={this.state.playerOneName}
+                onReset={this.handleReset}
+              />
+          }
+
+          {!this.state.playerTwoName
+            ? <PlayerInput
+              id='playerTwo'
+              label='Player Two'
+              onSubmit={this.handleSubmit}
+            />
+            : <PlayerPreview
+                id='playerTwo'
+                avatar={this.state.playerTwoImage}
+                username={this.state.playerTwoName}
+                onReset={this.handleReset}
+              />
+          }
+        </div>
+
+        {this.state.playerOneImage && this.state.playerTwoImage &&
+          <Link
+            className='button'
+            to={{
+              pathname: `${match.url}/results`,
+              search: `?playerOneName=${this.state.playerOneName}&playerTwoName=${this.state.playerTwoName}`
+            }}>
+            Battle
+          </Link>
         }
 
       </div>
@@ -147,6 +161,7 @@ PlayerInput.propTypes = {
 
 PlayerPreview.propTypes = {
   avatar: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,  
   username: PropTypes.string.isRequired,
   onReset: PropTypes.func.isRequired
 }
