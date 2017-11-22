@@ -1,11 +1,52 @@
 import React from 'react';
+import PlayerPreview from './PlayerPreview';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import api from './../utils/api'
+import api from './../utils/api';
+import { Link } from 'react-router-dom';
+
+const Profile = (props) => {
+  const i = props.info;
+
+  return (
+    <PlayerPreview username={i.login} avatar={i.avatar_url}>
+      <ul>
+        {i.name && <li>{i.name}</li>}
+        {i.location && <li>{i.location}</li>}
+        {i.company && <li>{i.company}</li>}
+        <li>Followers: {i.followers}</li>
+        <li>Following: {i.following}</li>
+        <li>Public repos: {i.public_repos}</li>
+        {i.blog && <li><a href={i.blog}>{i.blog}</a></li>}
+      </ul>
+    </PlayerPreview>
+  );
+};
+
+Profile.propTypes = {
+  info: PropTypes.object.isRequired
+}
+
+const Player = (props) => {
+  return (
+    <div>
+      <h1 className='header'>{props.label}</h1>
+      <h3>Score: {props.score}</h3>
+      <Profile info={props.profile} />
+    </div>
+  );
+};
+
+Player.propTypes = {
+  label: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  profile: PropTypes.object.isRequired
+}
 
 class Results extends React.Component {
   constructor (props) {
     super(props);
-
+    
     this.state = {
       winner: null,
       loser: null,
@@ -13,10 +54,10 @@ class Results extends React.Component {
       loading: true
     }
   }
-
+  
   componentDidMount() {
     const players = queryString.parse(this.props.location.search);
-  
+    
     api.battle([
       players.playerOneName,
       players.PlayerTwoName
@@ -30,7 +71,7 @@ class Results extends React.Component {
           }
         })
       }
-
+      
       this.setState(() => {
         return {
           error: null,
@@ -41,22 +82,38 @@ class Results extends React.Component {
       })
     })
   }
-
+  
   render() {
-    return (
-      <div>
-        {this.state.loading &&
-          <p>Loading</p>}
+    var error = this.state.error;
+    var winner = this.state.winner;
+    var loser = this.state.loser;
+    var loading = this.state.loading;
 
-        {this.state.error &&
-          <div>
-            {this.state.error}
-            <Link to='/battle'>Battle again!</Link>
-          </div>}
+    if (loading === true) {
+      return <p>Loading!</p>
+    }
 
+    if (error) {
+      return (
         <div>
-          {JSON.stringify(this.state.winner, null, 2)}
+          <p>{error}</p>
+          <Link to='/battle'>Reset</Link>
         </div>
+      )
+    }
+
+    return (
+      <div className='row'>
+        <Player
+          label='Winner'
+          score={winner.score}
+          profile={winner.profile}
+        />
+        <Player
+          label='Loser'
+          score={loser.score}
+          profile={loser.profile}
+        />
       </div>
     )
   }

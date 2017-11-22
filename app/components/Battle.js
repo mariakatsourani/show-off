@@ -1,26 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-function PlayerPreview (props) {
-  return (
-    <div>
-      <div className='column'>
-        <img
-          className='avatar'
-          src={props.avatar}
-          alt={`Avatar for ${props.username}`}
-        />
-        <h2>{props.username}</h2>
-        <button
-          className='reset'
-          onClick={props.onReset.bind(null, props.id)}>
-          Reset
-        </button>
-      </div>
-    </div>
-  )
-}
+import PlayerPreview from './PlayerPreview';
 
 class PlayerInput extends React.Component {
   constructor(props) {
@@ -115,11 +96,14 @@ class Battle extends React.Component {
               onSubmit={this.handleSubmit}
             />
             : <PlayerPreview
-                id='playerOne'
                 avatar={this.state.playerOneImage}
-                username={this.state.playerOneName}
-                onReset={this.handleReset}
-              />
+                username={this.state.playerOneName} >
+                  <button
+                    className='reset'
+                    onClick={this.handleReset.bind(null, 'playerOne')}>
+                    Reset
+                  </button>
+                </PlayerPreview>
           }
 
           {!this.state.playerTwoName
@@ -129,11 +113,14 @@ class Battle extends React.Component {
               onSubmit={this.handleSubmit}
             />
             : <PlayerPreview
-                id='playerTwo'
                 avatar={this.state.playerTwoImage}
-                username={this.state.playerTwoName}
-                onReset={this.handleReset}
-              />
+                username={this.state.playerTwoName} >
+                  <button
+                    className='reset'
+                    onClick={this.handleReset.bind(null, 'playerTwo')}>
+                    Reset
+                  </button>        
+              </PlayerPreview>
           }
         </div>
 
@@ -157,13 +144,6 @@ PlayerInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,  
-}
-
-PlayerPreview.propTypes = {
-  avatar: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,  
-  username: PropTypes.string.isRequired,
-  onReset: PropTypes.func.isRequired
 }
 
 export default Battle;

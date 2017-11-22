@@ -4,10 +4,14 @@ import { Link } from 'react-router-dom';
 const ghApiv3 = 'https://api.github.com/';
 
 const getProfile = (username) => {
-  return axios.get(`${ghApiv3}users/${username}`)
+  const lol = axios.get(`${ghApiv3}users/${username}`)
   .then((user) => {
+    // console.log(user.data)
     return user.data;
   });
+
+  console.log(lol)
+  return lol;
 }
 
 const getRepos = (username) => {
@@ -39,7 +43,7 @@ const getUserData = (player) => {
   ]).then((data) => {
     const profile = data[0];
     const repos = data[1];
-
+// console.log(repos)
     return {
       profile: profile,
       score: calculateScore(profile, repos)
@@ -49,7 +53,7 @@ const getUserData = (player) => {
 
 const sortPlayers = (players) => {
   return players.sort((a, b) => {
-    return a.score - b.score;
+    return b.score - a.score;
   })
 }
 
