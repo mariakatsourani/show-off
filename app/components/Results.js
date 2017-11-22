@@ -1,5 +1,6 @@
 import React from 'react';
 import PlayerPreview from './PlayerPreview';
+import Loading from './Loading';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import api from './../utils/api';
@@ -90,7 +91,7 @@ class Results extends React.Component {
     var loading = this.state.loading;
 
     if (loading === true) {
-      return <p>Loading!</p>
+      return <Loading />
     }
 
     if (error) {
